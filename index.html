@@ -143,6 +143,24 @@ h2::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--a1
 /* ССЫЛКИ */
 .links{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px}
 
+
+/* ЧТО ДАЛЬШЕ */
+.next{display:flex;align-items:center;gap:clamp(20px,3vw,36px);flex-wrap:wrap;
+ background:var(--bg2);border:1px solid var(--line);border-radius:18px;
+ padding:clamp(24px,3.2vw,40px);position:relative;overflow:hidden}
+.next::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+ background:linear-gradient(90deg,var(--a1),var(--a2))}
+.next .txt{flex:1;min-width:260px}
+.next h3{font-family:'Benzin';font-weight:700;text-transform:uppercase;
+ font-size:clamp(17px,2.1vw,26px);margin-bottom:12px;letter-spacing:.01em}
+.next p{font-size:14.5px;color:#a8a192;max-width:56ch}
+.next a{display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:11px;
+ border:1px solid var(--a1);color:var(--a1);text-decoration:none;font-family:'Benzin';
+ font-weight:700;font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;
+ white-space:nowrap;transition:.3s}
+.next a:hover{background:var(--a1);color:#0a0a0a}
+.next a svg{width:17px;height:17px;fill:currentColor}
+
 /* CTA */
 .cta{position:relative;background:var(--bg2);border:1px solid var(--line);border-radius:22px;
  padding:clamp(28px,4.4vw,58px);overflow:hidden;animation:glow 3s ease-in-out infinite}
@@ -190,6 +208,7 @@ footer a{color:var(--a1);text-decoration:none;font-size:13px}
   <a href="#steps">Шаги</a>
   <a href="#money">Сколько стоит</a>
   <a href="#links">Ссылки</a>
+  <a href="#next">Что дальше</a>
  </div>
 </div></nav>
 
@@ -415,6 +434,20 @@ description: генерация картинок и видео через API м
   <a class="tool" href="https://docs.kie.ai/market/google/pro-image-to-image" target="_blank" rel="noopener"><span class="dot"></span><span><b>Nano Banana Pro</b><span>Качественные картинки</span></span><span class="tag">карточка</span></a>
   <a class="tool" href="https://docs.kie.ai/market/gpt/gpt-image-2-image-to-image" target="_blank" rel="noopener"><span class="dot"></span><span><b>GPT Image 2</b><span>Когда нужен текст на картинке</span></span><span class="tag">карточка</span></a>
   <a class="tool" href="https://docs.kie.ai/market/kling/kling-3-0" target="_blank" rel="noopener"><span class="dot"></span><span><b>Kling 3.0</b><span>Видео из картинки</span></span><span class="tag">карточка</span></a>
+ </div>
+</div></section>
+
+<section id="next"><div class="wrap">
+ <h2>Что дальше</h2>
+ <div class="next">
+  <div class="txt">
+   <h3>Сайты, за которые платят как агентству</h3>
+   <p>Картинки и ролики сами по себе денег не приносят - они начинают работать, когда становятся продуктом для клиента. В этом видео разбираю, как собирать сайты уровня агентства. С тем скиллом, который ты только что собрал, это выйдет в разы дешевле.</p>
+  </div>
+  <a href="https://www.youtube.com/watch?v=hvhcxkkWI0A" target="_blank" rel="noopener">
+   <svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.5 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+   Смотреть
+  </a>
  </div>
 </div></section>
 
