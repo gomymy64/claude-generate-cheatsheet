@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Материалы к Уроку Генерация Картинок и Видео в Claude | Мастодонт</title>
+<style>
+@font-face{font-family:'Benzin';src:url('fonts/Benzin-Semibold.ttf');font-weight:600;font-display:swap}
+@font-face{font-family:'Benzin';src:url('fonts/Benzin-Bold.ttf');font-weight:700;font-display:swap}
+@font-face{font-family:'Benzin';src:url('fonts/Benzin-ExtraBold.ttf');font-weight:800;font-display:swap}
+@font-face{font-family:'Onest';src:url('fonts/Onest-Regular.ttf');font-weight:400;font-display:swap}
+@font-face{font-family:'Onest';src:url('fonts/Onest-Medium.ttf');font-weight:500;font-display:swap}
+@font-face{font-family:'Onest';src:url('fonts/Onest-Bold.ttf');font-weight:700;font-display:swap}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+ --bg:#07070A; --bg2:#0E0E13; --bg3:#14141B;
+ --a1:#F2DB82; --a2:#E0913A;
+ --txt:#F0EDE4; --dim:#8E8878; --line:rgba(242,219,130,.14);
+ --mono:'SFMono-Regular',Consolas,'Liberation Mono',monospace;
+}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{background:var(--bg);color:var(--txt);font-family:'Onest',sans-serif;line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+ background:radial-gradient(60% 40% at 12% 0%,rgba(242,219,130,.09),transparent 60%),
+            radial-gradient(50% 40% at 88% 22%,rgba(224,145,58,.07),transparent 62%),
+            radial-gradient(60% 50% at 50% 100%,rgba(242,219,130,.05),transparent 60%)}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.025;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(7,7,10,.86);backdrop-filter:blur(16px);
+ border-bottom:1px solid transparent;
+ border-image:linear-gradient(90deg,transparent,var(--a1),var(--a2),transparent) 1}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:66px;gap:16px}
+.brand{font-family:'Benzin';font-weight:800;font-size:clamp(15px,1.5vw,19px);letter-spacing:.06em;text-transform:uppercase}
+.navlinks{display:flex;gap:clamp(8px,1.4vw,20px);flex-wrap:wrap}
+.navlinks a{color:var(--dim);text-decoration:none;font-size:13px;font-weight:500;padding:7px 12px;
+ border-radius:8px;transition:.25s;white-space:nowrap}
+.navlinks a:hover{color:var(--a1);background:rgba(242,219,130,.08)}
+@media(max-width:700px){.navlinks a:nth-child(n+3){display:none}}
+
+/* HERO */
+header{padding:clamp(56px,9vw,110px) 0 clamp(40px,6vw,72px)}
+.badge{display:inline-flex;align-items:center;gap:9px;padding:8px 16px;border:1px solid var(--line);
+ border-radius:999px;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--a1);
+ background:rgba(242,219,130,.05);margin-bottom:clamp(20px,3vw,34px)}
+.badge i{width:6px;height:6px;border-radius:50%;background:var(--a1);box-shadow:0 0 10px var(--a1);
+ animation:pulse 2.4s ease-in-out infinite;font-style:normal}
+@keyframes pulse{50%{opacity:.25}}
+h1{font-family:'Benzin';font-weight:800;text-transform:uppercase;line-height:1.02;
+ font-size:clamp(30px,5.4vw,68px);letter-spacing:-.01em;
+ background:linear-gradient(103deg,var(--txt) 8%,var(--a1) 46%,var(--a2) 88%);
+ -webkit-background-clip:text;background-clip:text;color:transparent;max-width:20ch}
+.sub{margin-top:clamp(18px,2.6vw,28px);max-width:62ch;color:#b3ac9c;font-size:clamp(15px,1.25vw,18px)}
+.watch{margin-top:clamp(26px,3.6vw,42px);display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+ padding:clamp(18px,2.4vw,26px);border:1px solid var(--line);border-radius:16px;background:var(--bg2);
+ box-shadow:0 24px 60px -30px rgba(242,219,130,.3)}
+.watch p{font-size:14px;color:var(--dim);flex:1;min-width:200px}
+.watch a{display:inline-flex;align-items:center;gap:10px;padding:14px 26px;border-radius:11px;
+ background:linear-gradient(100deg,var(--a1),var(--a2));color:#0a0a0a;text-decoration:none;
+ font-family:'Benzin';font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;
+ transition:transform .3s,box-shadow .3s}
+.watch a:hover{transform:translateY(-2px);box-shadow:0 14px 34px -12px rgba(242,219,130,.55)}
+.watch svg{width:19px;height:19px;fill:currentColor}
+
+section{padding:clamp(44px,6vw,80px) 0}
+h2{font-family:'Benzin';font-weight:700;text-transform:uppercase;font-size:clamp(21px,3.1vw,38px);
+ letter-spacing:.01em;margin-bottom:clamp(24px,3.4vw,44px);display:flex;align-items:center;gap:16px}
+h2::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--a1),transparent)}
+
+/* КАРТОЧКИ «научишься» */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(14px,1.8vw,22px)}
+.card{position:relative;background:var(--bg2);border:1px solid var(--line);border-radius:15px;
+ padding:clamp(22px,2.6vw,30px);overflow:hidden;transition:transform .35s,border-color .35s}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+ background:linear-gradient(90deg,var(--a1),var(--a2))}
+.card:hover{transform:translateY(-4px);border-color:rgba(242,219,130,.34)}
+.card .ico{width:42px;height:42px;border-radius:11px;background:rgba(242,219,130,.1);
+ display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.card .ico svg{width:21px;height:21px;stroke:var(--a1);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.card h3{font-family:'Benzin';font-weight:600;text-transform:uppercase;font-size:15px;margin-bottom:9px;letter-spacing:.02em}
+.card p{font-size:14px;color:#a8a192}
+
+/* ИНСТРУМЕНТЫ */
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.tool{display:flex;align-items:center;gap:15px;padding:18px 20px;background:var(--bg2);
+ border:1px solid var(--line);border-radius:13px;text-decoration:none;color:inherit;transition:.3s}
+.tool:hover{border-color:rgba(242,219,130,.36);background:var(--bg3);transform:translateX(4px)}
+.tool .dot{width:9px;height:9px;border-radius:50%;background:linear-gradient(var(--a1),var(--a2));flex-shrink:0}
+.tool b{font-family:'Benzin';font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:.02em;display:block}
+.tool span{font-size:12.5px;color:var(--dim);display:block;margin-top:3px}
+.tool .tag{margin-left:auto;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--a1);
+ border:1px solid var(--line);padding:5px 10px;border-radius:999px;white-space:nowrap}
+
+/* ШАГИ */
+.step{position:relative;background:var(--bg2);border:1px solid var(--line);border-radius:18px;
+ padding:clamp(24px,3.2vw,40px);margin-bottom:clamp(16px,2.2vw,26px);overflow:hidden}
+.step::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+ background:linear-gradient(90deg,var(--a1),var(--a2))}
+.step::after{content:'';position:absolute;top:-70px;right:-70px;width:200px;height:200px;
+ background:radial-gradient(circle,rgba(242,219,130,.09),transparent 68%);pointer-events:none}
+.step .num{font-family:'Benzin';font-weight:800;font-size:clamp(34px,5vw,60px);line-height:1;
+ background:linear-gradient(150deg,var(--a1),var(--a2));-webkit-background-clip:text;background-clip:text;
+ color:transparent;opacity:.42;margin-bottom:10px}
+.step h3{font-family:'Benzin';font-weight:700;text-transform:uppercase;font-size:clamp(17px,2.1vw,25px);
+ margin-bottom:14px;letter-spacing:.01em}
+.step .desc{color:#a8a192;font-size:15px;max-width:70ch}
+.acts{margin:24px 0 0;list-style:none;display:flex;flex-direction:column;gap:11px}
+.acts li{display:flex;gap:12px;font-size:14.5px;color:#c4bdad}
+.acts li::before{content:'▸';color:var(--a1);flex-shrink:0;font-weight:700}
+.hint{margin-top:22px;padding:15px 18px;background:rgba(242,219,130,.05);border-left:2px solid var(--a1);
+ border-radius:0 10px 10px 0;font-size:14px;color:#bcb5a5}
+.hint b{color:var(--a1);font-weight:700}
+
+/* ПРОМПТЫ */
+.prompt{margin-top:24px;background:var(--bg);border:1px solid var(--line);border-left:3px solid transparent;
+ border-image:linear-gradient(180deg,var(--a1),var(--a2)) 1;border-radius:0 13px 13px 0;overflow:hidden;
+ box-shadow:0 18px 44px -26px rgba(242,219,130,.34)}
+.prompt .top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+ padding:13px 18px;background:rgba(242,219,130,.045);border-bottom:1px solid var(--line)}
+.prompt .lbl{font-family:'Benzin';font-weight:600;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--a1)}
+.copy{background:transparent;border:1px solid var(--line);color:var(--a1);padding:7px 15px;border-radius:8px;
+ font-family:'Onest';font-size:11.5px;font-weight:500;cursor:pointer;transition:.25s;white-space:nowrap}
+.copy:hover{background:var(--a1);color:#0a0a0a;border-color:var(--a1)}
+.copy.done{background:var(--a1);color:#0a0a0a;border-color:var(--a1)}
+.prompt pre{padding:20px 18px;overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.72;
+ color:#ddd6c6;white-space:pre-wrap;word-break:break-word}
+.setup{margin-top:16px;font-size:13.5px;color:var(--dim)}
+.setup b{color:var(--a1)}
+
+/* ЦЕНЫ */
+.price{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;
+ background:var(--line);border:1px solid var(--line);border-radius:15px;overflow:hidden}
+.price div{background:var(--bg2);padding:clamp(22px,2.8vw,32px)}
+.price b{font-family:'Benzin';font-weight:800;display:block;font-size:clamp(24px,3.4vw,42px);
+ background:linear-gradient(140deg,var(--a1),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.price span{display:block;margin-top:9px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.warn{margin-top:20px;display:flex;gap:14px;padding:18px 20px;background:var(--bg2);
+ border:1px solid var(--line);border-radius:13px;font-size:14px;color:#bcb5a5}
+.warn i{color:var(--a2);font-style:normal;flex-shrink:0}
+
+/* ССЫЛКИ */
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px}
+
+/* CTA */
+.cta{position:relative;background:var(--bg2);border:1px solid var(--line);border-radius:22px;
+ padding:clamp(28px,4.4vw,58px);overflow:hidden;animation:glow 3s ease-in-out infinite}
+@keyframes glow{50%{border-color:rgba(242,219,130,.38)}}
+.cta::before,.cta::after{content:'';position:absolute;width:340px;height:340px;pointer-events:none}
+.cta::before{top:-150px;left:-110px;background:radial-gradient(circle,rgba(242,219,130,.14),transparent 68%)}
+.cta::after{bottom:-160px;right:-110px;background:radial-gradient(circle,rgba(224,145,58,.12),transparent 68%)}
+.cta h2{margin-bottom:clamp(24px,3vw,36px);font-size:clamp(20px,3vw,36px)}
+.cta h2::after{display:none}
+.cta h2 span{background:linear-gradient(100deg,var(--a1),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,3.4vw,46px);position:relative;z-index:1}
+@media(max-width:760px){.cols{grid-template-columns:1fr;gap:28px}}
+.cols h4{font-family:'Benzin';font-weight:600;font-size:11px;letter-spacing:.28em;text-transform:uppercase;
+ color:var(--dim);margin-bottom:16px}
+.cols ul{list-style:none;display:flex;flex-direction:column;gap:13px}
+.cols li{display:flex;gap:11px;font-size:14.5px;color:#c4bdad}
+.cols li b{color:var(--txt);font-weight:600}
+.ctabot{margin-top:clamp(28px,3.6vw,44px);padding-top:clamp(22px,2.8vw,32px);border-top:1px solid var(--line);
+ display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;position:relative;z-index:1}
+.ctabot p{font-size:15px;color:var(--dim)}
+.ctabot p b{font-family:'Benzin';font-weight:700;color:var(--a1);text-transform:uppercase}
+.ctabot a{display:inline-flex;padding:16px 34px;border-radius:12px;
+ background:linear-gradient(100deg,var(--a1),var(--a2));color:#0a0a0a;text-decoration:none;
+ font-family:'Benzin';font-weight:700;font-size:13px;letter-spacing:.07em;text-transform:uppercase;
+ transition:transform .3s,box-shadow .3s}
+.ctabot a:hover{transform:translateY(-2px);box-shadow:0 16px 38px -14px rgba(242,219,130,.6)}
+
+footer{border-top:1px solid var(--line);padding:clamp(34px,4.4vw,56px) 0;margin-top:clamp(40px,5vw,72px)}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+footer .brand{font-size:16px}
+footer p{font-size:13px;color:var(--dim)}
+footer a{color:var(--a1);text-decoration:none;font-size:13px}
+
+::-webkit-scrollbar{width:11px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--a1),var(--a2));border-radius:6px}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+ <div class="brand">Мастодонт</div>
+ <div class="navlinks">
+  <a href="#tools">Инструменты</a>
+  <a href="#steps">Шаги</a>
+  <a href="#money">Сколько стоит</a>
+  <a href="#links">Ссылки</a>
+ </div>
+</div></nav>
+
+<header><div class="wrap">
+ <div class="badge"><i></i>Материалы к уроку</div>
+ <h1>Генерю картинки и видео в 8 раз дешевле</h1>
+ <p class="sub">Собираем в Claude свой скилл, который сам ходит к моделям, платит только за то, что реально сгенерил, и складывает всё к тебе на диск. Ниже - все промпты и ссылки из урока, копируй и повторяй.</p>
+ <div class="watch">
+  <p>Смотрел урок? Тут всё, что нужно, чтобы повторить - по шагам.</p>
+  <a href="__YOUTUBE_URL__" target="_blank" rel="noopener">
+   <svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.5 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+   Смотреть видео
+  </a>
+ </div>
+</div></header>
+
+<section><div class="wrap">
+ <h2>Что ты научишься делать</h2>
+ <div class="grid">
+  <div class="card">
+   <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/></svg></div>
+   <h3>Свой скилл генерации</h3>
+   <p>Один текстовый файл вместо платной подписки. Скилл сам выбирает самого дешёвого провайдера и объясняет, куда пошёл.</p>
+  </div>
+  <div class="card">
+   <div class="ico"><svg viewBox="0 0 24 24"><path d="M21 15V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9"/><path d="M3 15h18l-2 5H5z"/></svg></div>
+   <h3>Оплата по факту</h3>
+   <p>Подключаешь провайдеров по API и платишь центы за конкретную картинку, а не фикс за то, что прошёл месяц.</p>
+  </div>
+  <div class="card">
+   <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 15l5-5 4 4 3-3 6 6"/></svg></div>
+   <h3>Своя галерея и сайт</h3>
+   <p>Стена из всех генераций одной страницей, а из понравившегося кадра - сайт с живым видео на фоне, одной командой.</p>
+  </div>
+ </div>
+</div></section>
+
+<section id="tools"><div class="wrap">
+ <h2>Что понадобится</h2>
+ <div class="tools">
+  <a class="tool" href="https://claude.ai/download" target="_blank" rel="noopener">
+   <span class="dot"></span><span><b>Claude Desktop</b><span>Подписка Pro или Max</span></span><span class="tag">платно</span></a>
+  <a class="tool" href="https://kie.ai" target="_blank" rel="noopener">
+   <span class="dot"></span><span><b>Kie AI</b><span>Оплата по факту, кредиты не сгорают</span></span><span class="tag">от 5 $</span></a>
+  <a class="tool" href="https://fal.ai" target="_blank" rel="noopener">
+   <span class="dot"></span><span><b>Fal AI</b><span>Запасной провайдер моделей</span></span><span class="tag">по факту</span></a>
+  <a class="tool" href="https://wavespeed.ai" target="_blank" rel="noopener">
+   <span class="dot"></span><span><b>WaveSpeed AI</b><span>Второй запасной провайдер</span></span><span class="tag">по факту</span></a>
+ </div>
+</div></section>
+
+<section id="steps"><div class="wrap">
+ <h2>Шаги</h2>
+
+ <div class="step">
+  <div class="num">01</div>
+  <h3>Получаем ключ и кладём его в файл</h3>
+  <p class="desc">Заходим к провайдеру, пополняем баланс и создаём ключ доступа. Дальше Claude сам положит его в нужный файл - руками ничего не создаём.</p>
+  <ul class="acts">
+   <li>Зарегистрируйся на kie.ai и пополни баланс - хватит десятки</li>
+   <li>Загляни в раздел «Биллинг»: там можно переключить язык и посмотреть способы оплаты</li>
+   <li>Открой «API ключи», создай новый, дай имя и скопируй</li>
+  </ul>
+  <div class="prompt">
+   <div class="top"><span class="lbl">Промпт 1 - кладём ключ в файл</span><button class="copy">Скопировать</button></div>
+   <pre>создай в моей рабочей папке файл .env и положи туда мой ключ от kie:
+KIE_API_KEY=сюда_вставляешь_ключ</pre>
+  </div>
+  <div class="hint"><b>Важно.</b> Ключи живут только в файле .env и больше нигде - не в чате и не в коде. Захочешь подключить второго провайдера - просто скажешь дописать вторую строку.</div>
+ </div>
+
+ <div class="step">
+  <div class="num">02</div>
+  <h3>Пишем мозг скилла</h3>
+  <p class="desc">Одно сообщение - и скилл создан и установлен в систему. Кодить не нужно: скилл это обычный текстовый документ с инструкциями, написанными человеческим языком.</p>
+  <div class="prompt">
+   <div class="top"><span class="lbl">Промпт 2 - создаём скилл</span><button class="copy">Скопировать</button></div>
+   <pre>создай себе скилл generate и установи его в систему, вот его содержимое:
+
+---
+name: generate
+description: генерация картинок и видео через API моделей. срабатывает на
+  /generate, сгенерируй картинку, сгенерируй видео, создай изображение, обложку, оживи
+---
+# /generate
+
+## Модели
+| Задача | Модель по умолчанию | Карточка |
+|---|---|---|
+| Картинка (по умолчанию) | Nano Banana 2 Lite | models/nano-banana-2-lite.md |
+| Картинка (обычная) | Nano Banana 2 | models/nano-banana-2.md |
+| Картинка (качество) | Nano Banana Pro | models/nano-banana-pro.md |
+| Картинка с текстом | GPT Image 2 | models/gpt-image-2.md |
+| Видео (по умолчанию) | Kling 3.0 | models/kling-3.0.md |
+Перед каждой генерацией читай карточку модели.
+
+## Выбор провайдера
+1. По умолчанию иди к САМОМУ ДЕШЁВОМУ провайдеру, который нормально тянет эту модель
+   (Kie AI, потом fal.ai, потом WaveSpeed AI).
+2. Если у дешёвого нет модели, не проходит авторизация или он отдаёт ошибку - иди к следующему.
+3. Никогда не скрывай, что сменил провайдера. Говори, каким путём пошёл и почему.
+
+## Куда складывать
+- Сохраняй каждый файл ПЛОСКО в мою папку generations: [ТВОЙ ПУТЬ]
+- Без подпапок. Референсы лежат в generations/refs/
+- Имя файла: {проект}_{описание}_{таймстамп}.{расширение}
+
+## Правила
+- Перед любой платной генерацией видео назови цену и жди моего явного «го».
+  Назвал цену - это ещё не разрешение. Одно «го» = один запуск.
+- Черновики гони на дешёвой модели. Перезапускай на качественной только когда я выбрал вариант.
+- Никогда не описывай логотип или лицо словами. Подавай настоящий файл картинки как референс.
+  Файла нет - остановись и попроси у меня.
+- Гони генерации по одной, чтобы не упереться в лимит запросов.
+- После каждого сохранения пиши лог рядом с файлом.</pre>
+  </div>
+  <div class="setup">⚙️ <b>Поменяй</b> [ТВОЙ ПУТЬ] на путь к своей папке, куда будут падать все генерации.</div>
+  <div class="hint">Обрати внимание на блок «Выбор провайдера» - три строчки, в которых и лежит вся экономия. Даже если сейчас провайдер один, правило пусть стоит сразу: добавишь второй ключ, и скилл начнёт сравнивать сам.</div>
+ </div>
+
+ <div class="step">
+  <div class="num">03</div>
+  <h3>Заводим карточки моделей</h3>
+  <p class="desc">Карточка - это файлик на одну модель: как называется, куда стучаться, каким ключом, что отправлять и откуда забирать готовое. Разбираться в этом не нужно - страница копируется одной кнопкой.</p>
+  <ul class="acts">
+   <li>Открой страницу нужной модели (ссылки ниже)</li>
+   <li>Нажми кнопку «Copy page» справа сверху - копируется вся страница целиком</li>
+   <li>Отправь Claude промпт ниже, а следом вставь скопированную страницу</li>
+   <li>Повтори для остальных моделей - у меня их пять</li>
+  </ul>
+  <div class="prompt">
+   <div class="top"><span class="lbl">Промпт 3 - добавляем модель</span><button class="copy">Скопировать</button></div>
+   <pre>добавь эту модель в скилл generate - заведи ей карточку в папке models</pre>
+  </div>
+  <div class="setup">Страницы моделей: <b>Nano Banana 2 Lite</b> · <b>Nano Banana 2</b> · <b>Nano Banana Pro</b> · <b>GPT Image 2</b> · <b>Kling 3.0</b> - все ссылки в конце страницы.</div>
+  <div class="hint">Это делается один раз. Вышла новая модель - добавил тем же способом, и скилл её выучил.</div>
+ </div>
+
+ <div class="step">
+  <div class="num">04</div>
+  <h3>Первый запуск: одна задача на четыре модели</h3>
+  <p class="desc">Просим сделать рекламные креативы и сразу прогнать их через разные модели, чтобы сравнить. Бюджет задаётся прямо в запросе - в платном сервисе такого не сделаешь.</p>
+  <div class="prompt">
+   <div class="top"><span class="lbl">Промпт 4 - креативы на четырёх моделях</span><button class="copy">Скопировать</button></div>
+   <pre>/generate
+сделай мне несколько вариантов рекламных креативов для энергетика МАСТОДОНТ
+это банка энергетика, бренд про мощь и скорость
+
+логотип прикладываю - используй его на банке как есть, не перерисовывай
+
+сгенерируй в разных соотношениях сторон, в разных стилях - и удиви меня своей экспертизой креативного директора
+
+правила
+- общий бюджет на эти генерации 3 бакса, не превышай его
+- используй разные модели картинок. хочу увидеть gpt image 2, nano banana 2, nano banana pro и nano banana 2 lite
+- на каждом креативе банка должна быть в кадре
+- бери самого дешёвого провайдера из тех что подключены</pre>
+  </div>
+  <div class="hint"><b>Про логотип.</b> Не описывай его словами - получится не то. Скажи Claude, в какой папке лежит файл и как он называется, и он возьмёт картинку как есть. Рядом с каждой генерацией останется файлик с промптом, моделью и ценой - через месяц не придётся вспоминать, чем ты это сделал.</div>
+ </div>
+
+ <div class="step">
+  <div class="num">05</div>
+  <h3>Галерея всех генераций</h3>
+  <p class="desc">Когда речь про визуал, сидеть в терминале и открывать файлы по одному невозможно. Собираем страницу, которая показывает всё содержимое папки одной стеной.</p>
+  <div class="prompt">
+   <div class="top"><span class="lbl">Промпт 5 - галерея</span><button class="copy">Скопировать</button></div>
+   <pre>собери мне одну веб-страницу, которая показывает всё, что генерит мой ии - картинки и видео в одном месте, стеной как бенто
+
+- она читает одну папку у меня на компьютере, которая называется generations, и показывает всё что там лежит, самое свежее сверху
+- разложи плиткой как masonry - каждая плитка держит свою форму, ничего не обрезается и не сплющивается, скруглённые карточки с ровными отступами, 4 колонки в ширину и меньше когда окно сужается
+- видео начинают тихо играть когда навожу мышкой и останавливаются когда увожу, картинки просто лежат
+- клик по любой плитке открывает её крупно по центру экрана, клик мимо закрывает
+- никакого поиска, фильтров, вкладок и боковых панелей - просто стена из всего
+
+сделай одним файлом, чтобы запускалось просто открытием, и чтобы выглядело как законченная галерея, а не черновик
+
+когда страница готова - допиши строчку в мой CLAUDE md, чтобы с этого момента всё, что делает скилл generate, сохранялось сразу в эту же папку generations и само появлялось на этой странице. страницу каждый раз не открывай, просто сохрани файл</pre>
+  </div>
+  <div class="hint">Последний абзац - самый недооценённый. Он дописывает правило в общую память Claude, и дальше галерея пополняется сама, из любого чата.</div>
+ </div>
+
+ <div class="step">
+  <div class="num">06</div>
+  <h3>Из одной картинки - сайт с живым видео</h3>
+  <p class="desc">Выбираешь понравившийся кадр, копируешь путь к файлу и отдаёшь его Claude. Дальше одной командой идут три работы: картинка оживает в видео, догенериваются кадры в том же стиле и собирается страница.</p>
+  <div class="prompt">
+   <div class="top"><span class="lbl">Промпт 6 - сайт из картинки</span><button class="copy">Скопировать</button></div>
+   <pre>собери мне сайт под этот продукт, отталкивайся вот от этой картинки:
+[полный путь к файлу]
+
+- оживи эту картинку в видео через kling 3.0 и поставь фоном на первый экран
+- считай это витриной. смысл в том чтобы показать вкус и уровень работы, а не выкатить что-то сойдёт
+- цвета вытащи прямо из картинки и собери всю страницу внутри этого мира, не выдумывай свою палитру
+- используй настоящие изображения, а не градиенты которые притворяются артом. догенери ещё кадров в том же мире через nano banana pro или gpt image 2, чтобы на странице была реальная съёмка
+- шрифты подбери под бренд, ориентируйся на референсы что я скидывал
+- общий бюджет на генерации в этом заходе 9 баксов</pre>
+  </div>
+  <div class="setup">⚙️ Разрешение, длину ролика и звук Claude выставит <b>сам</b> - возьмёт из карточки модели, которую ты завёл на третьем шаге.</div>
+ </div>
+</div></section>
+
+<section id="money"><div class="wrap">
+ <h2>Сколько это реально стоит</h2>
+ <div class="price">
+  <div><b>0.52 $</b><span>11 креативов на 4 моделях</span></div>
+  <div><b>0.35 $</b><span>Видео 5 секунд</span></div>
+  <div><b>0.27 $</b><span>3 кадра под сайт</span></div>
+  <div><b>1.14 $</b><span>Всё вместе</span></div>
+ </div>
+ <div class="warn"><i>⚠</i><span><b>Видео считается по секундам</b> и выходит примерно в 7 раз дороже картинки. Правило «назови цену и жди подтверждения» из скилла лучше не убирать - иначе агент честно сделает всё, о чём ты попросил.</span></div>
+ <div class="warn"><i>⚠</i><span><b>Провайдеры переименовывают модели.</b> Вчера работало, сегодня «модель не найдена». Лечится за минуту: заходишь на страницу модели, копируешь свежее название и обновляешь карточку.</span></div>
+</div></section>
+
+<section id="links"><div class="wrap">
+ <h2>Все ссылки</h2>
+ <div class="links">
+  <a class="tool" href="https://kie.ai" target="_blank" rel="noopener"><span class="dot"></span><span><b>Kie AI</b><span>Провайдер моделей</span></span><span class="tag">основной</span></a>
+  <a class="tool" href="https://fal.ai" target="_blank" rel="noopener"><span class="dot"></span><span><b>Fal AI</b><span>Провайдер моделей</span></span><span class="tag">запасной</span></a>
+  <a class="tool" href="https://wavespeed.ai" target="_blank" rel="noopener"><span class="dot"></span><span><b>WaveSpeed AI</b><span>Провайдер моделей</span></span><span class="tag">запасной</span></a>
+  <a class="tool" href="https://docs.kie.ai/market/google/nano-banana-2-lite" target="_blank" rel="noopener"><span class="dot"></span><span><b>Nano Banana 2 Lite</b><span>Дешёвая модель для черновиков</span></span><span class="tag">карточка</span></a>
+  <a class="tool" href="https://docs.kie.ai/market/google/nanobanana2" target="_blank" rel="noopener"><span class="dot"></span><span><b>Nano Banana 2</b><span>Обычные картинки</span></span><span class="tag">карточка</span></a>
+  <a class="tool" href="https://docs.kie.ai/market/google/pro-image-to-image" target="_blank" rel="noopener"><span class="dot"></span><span><b>Nano Banana Pro</b><span>Качественные картинки</span></span><span class="tag">карточка</span></a>
+  <a class="tool" href="https://docs.kie.ai/market/gpt/gpt-image-2-image-to-image" target="_blank" rel="noopener"><span class="dot"></span><span><b>GPT Image 2</b><span>Когда нужен текст на картинке</span></span><span class="tag">карточка</span></a>
+  <a class="tool" href="https://docs.kie.ai/market/kling/kling-3-0" target="_blank" rel="noopener"><span class="dot"></span><span><b>Kling 3.0</b><span>Видео из картинки</span></span><span class="tag">карточка</span></a>
+ </div>
+</div></section>
+
+<section><div class="wrap">
+ <div class="cta">
+  <h2>Первые <span>$1200</span> на ИИ - бесплатный интенсив</h2>
+  <div class="cols">
+   <div>
+    <h4>Внутри</h4>
+    <ul>
+     <li>✅ <span>Реальный демо AntiGravity вживую</span></li>
+     <li>✅ <span>Софт, который за 5 минут находит компании без сайтов с готовыми контактами</span></li>
+     <li>✅ <span>Кейсы учеников: <b>$1650 за 3 проекта</b> без команды</span></li>
+    </ul>
+   </div>
+   <div>
+    <h4>Два бонуса в конце</h4>
+    <ul>
+     <li>💰 <span>50 скучных и самых прибыльных ниш без конкуренции</span></li>
+     <li>🚀 <span>Чек-лист: первые $500 за 7 дней</span></li>
+    </ul>
+   </div>
+  </div>
+  <div class="ctabot">
+   <p><b>Бесплатно.</b> Навсегда.</p>
+   <a href="https://t.me/IntensivMastaBot" target="_blank" rel="noopener">Забрать интенсив</a>
+  </div>
+ </div>
+</div></section>
+
+<footer><div class="wrap">
+ <div class="brand">Мастодонт</div>
+ <p>AI и нейросети - просто, по делу</p>
+ <a href="__YOUTUBE_URL__" target="_blank" rel="noopener">Смотреть на YouTube</a>
+</div></footer>
+
+<script>
+document.querySelectorAll('.copy').forEach(function(b){
+ b.addEventListener('click',function(){
+  var txt=b.closest('.prompt').querySelector('pre').innerText;
+  navigator.clipboard.writeText(txt).then(function(){
+   var old=b.textContent;b.textContent='✓ Скопировано!';b.classList.add('done');
+   setTimeout(function(){b.textContent=old;b.classList.remove('done')},2000);
+  });
+ });
+});
+</script>
+</body>
+</html>
