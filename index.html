@@ -168,9 +168,10 @@ h2::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--a1
 .cta::before,.cta::after{content:'';position:absolute;width:340px;height:340px;pointer-events:none}
 .cta::before{top:-150px;left:-110px;background:radial-gradient(circle,rgba(242,219,130,.14),transparent 68%)}
 .cta::after{bottom:-160px;right:-110px;background:radial-gradient(circle,rgba(224,145,58,.12),transparent 68%)}
-.cta h2{margin-bottom:clamp(24px,3vw,36px);font-size:clamp(20px,3vw,36px)}
+.cta h2{display:block;margin-bottom:clamp(24px,3vw,36px);font-size:clamp(20px,3vw,36px);
+ line-height:1.16;text-wrap:balance;max-width:24ch}
 .cta h2::after{display:none}
-.cta h2 span{background:linear-gradient(100deg,var(--a1),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.cta h2 span{white-space:nowrap;background:linear-gradient(100deg,var(--a1),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,3.4vw,46px);position:relative;z-index:1}
 @media(max-width:760px){.cols{grid-template-columns:1fr;gap:28px}}
 .cols h4{font-family:'Benzin';font-weight:600;font-size:11px;letter-spacing:.28em;text-transform:uppercase;
